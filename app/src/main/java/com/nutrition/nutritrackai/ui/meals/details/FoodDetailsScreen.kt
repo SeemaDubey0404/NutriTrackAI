@@ -21,10 +21,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import com.nutrition.nutritrackai.domain.model.Food
 
 @Composable
-fun FoodDetailsScreen() {
-
+fun FoodDetailsScreen(navController: NavHostController,
+                      viewModel: FoodDetailsViewModel = hiltViewModel()) {
+    val food = navController
+        .previousBackStackEntry
+        ?.savedStateHandle
+        ?.get<Food>("food")
     var quantity by remember {
         mutableFloatStateOf(100f)
     }
@@ -51,7 +58,7 @@ fun FoodDetailsScreen() {
             ) {
 
                 Text(
-                    text = "Chocolate"
+                    text = food?.name ?: "Unknown Food"
                 )
 
                 Spacer(
@@ -59,19 +66,21 @@ fun FoodDetailsScreen() {
                 )
 
                 Text(
-                    text = "Calories: 540 kcal"
+                    text = "Calories: ${food?.calories ?: 0.0} "
                 )
 
                 Text(
-                    text = "Protein: 8 g"
+                    text = "Protein: ${food?.protein ?: 0.0} g"
                 )
 
                 Text(
-                    text = "Carbs: 62 g"
+
+                    text = "Carbs: ${food?.carbs ?: 0.0} g"
                 )
 
                 Text(
-                    text = "Fat: 24 g"
+                    text = "Fat:  ${food?.fat ?: 0.0} g"
+
                 )
 
             }
@@ -98,7 +107,16 @@ fun FoodDetailsScreen() {
             modifier = Modifier.fillMaxWidth(),
             onClick = {
 
-                // save meal later
+                food?.let {
+
+                    viewModel.saveMeal(
+                        food = it,
+                        quantity = quantity.toInt()
+                    )
+
+                    navController.popBackStack()
+
+                }
 
             }
         ) {

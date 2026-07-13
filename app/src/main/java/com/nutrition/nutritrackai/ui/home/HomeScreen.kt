@@ -30,13 +30,15 @@ import com.nutrition.nutritrackai.core.designsystem.components.NtSectionHeader
 import com.nutrition.nutritrackai.core.designsystem.components.card.NtCoachCard
 import com.nutrition.nutritrackai.core.designsystem.components.card.NtHeroCard
 import com.nutrition.nutritrackai.core.designsystem.components.card.NtMealCard
-
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.runtime.getValue
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = viewModel()
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
-
-    val state by viewModel.uiState.collectAsState()
+    val meals by viewModel.meals.collectAsStateWithLifecycle()
+  //  val state by viewModel.uiState.collectAsState()
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -52,12 +54,12 @@ fun HomeScreen(
                 Column {
 
                     Text(
-                        text = "${state.greeting} 👋",
+                        text = "Good Morning 👋",
                         style = MaterialTheme.typography.headlineMedium
                     )
 
                     Text(
-                        text = state.date,
+                        text = "13 July 2026",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray
                     )
@@ -65,7 +67,7 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(20.dp))
 
                     NtHeroCard(
-                        score = state.healthScore
+                        score = 85
                     )
 
                 }
@@ -125,11 +127,9 @@ fun HomeScreen(
 
         }
         item(span = { GridItemSpan(2) }) {
-
             NtCoachCard(
-                message = state.aiMessage
+                message = "Great job! Keep tracking your meals."
             )
-
         }
         item(span = { GridItemSpan(2) }) {
 
@@ -139,18 +139,24 @@ fun HomeScreen(
 
         }
         items(
-            state.meals.size,
+            meals.size,
             span = { GridItemSpan(2) }
         ) { index ->
 
-            val meal = state.meals[index]
+            val meal = meals[index]
 
             NtMealCard(
-                title = meal.title,
-                foods = meal.foods,
-                calories = meal.calories,
-                icon = meal.icon,
-                completed = meal.completed
+
+                title = meal.name,
+
+                foods = "${meal.quantity} g",
+
+                calories = meal.calories.toInt(),
+
+                icon = Icons.Default.LocalFireDepartment,
+
+                completed = true
+
             )
 
         }

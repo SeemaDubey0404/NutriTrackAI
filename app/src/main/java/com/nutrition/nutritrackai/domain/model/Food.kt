@@ -1,6 +1,9 @@
 package com.nutrition.nutritrackai.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Food(
 
     val name: String,
@@ -15,4 +18,4 @@ data class Food(
 
     val fat: Double
 
-)
+) : Parcelable

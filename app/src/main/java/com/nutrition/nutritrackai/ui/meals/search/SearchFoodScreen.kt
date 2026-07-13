@@ -102,6 +102,12 @@ fun SearchFoodScreen(
                             .fillMaxWidth()
                             .clickable {
 
+                                navController.currentBackStackEntry
+                                    ?.savedStateHandle
+                                    ?.set(
+                                        "food",
+                                        food
+                                    )
                                 navController.navigate(
                                     NavRoutes.FoodDetails.route
                                 )

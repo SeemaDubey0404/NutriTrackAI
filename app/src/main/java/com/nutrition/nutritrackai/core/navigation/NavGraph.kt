@@ -63,7 +63,7 @@ fun NavGraph() {
             route = NavRoutes.FoodDetails.route
         ) {
 
-            FoodDetailsScreen()
+            FoodDetailsScreen( navController = navController)
 
         }
     }
