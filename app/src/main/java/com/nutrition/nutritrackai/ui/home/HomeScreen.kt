@@ -149,7 +149,7 @@ fun HomeScreen(
 
                 title = meal.name,
 
-                foods = "${meal.quantity} g",
+                foods = "${meal.mealType} • ${meal.quantity} g",
 
                 calories = meal.calories.toInt(),
 

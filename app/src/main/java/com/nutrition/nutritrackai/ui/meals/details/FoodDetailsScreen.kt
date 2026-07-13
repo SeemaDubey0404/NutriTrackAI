@@ -3,6 +3,7 @@ package com.nutrition.nutritrackai.ui.meals.details
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,12 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -35,7 +38,9 @@ fun FoodDetailsScreen(navController: NavHostController,
     var quantity by remember {
         mutableFloatStateOf(100f)
     }
-
+    var mealType by remember {
+        mutableStateOf("Breakfast")
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -86,7 +91,35 @@ fun FoodDetailsScreen(navController: NavHostController,
             }
 
         }
+        Text(
+            text = "Meal Type",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
 
+            listOf(
+                "Breakfast",
+                "Lunch",
+                "Snacks",
+                "Dinner"
+            ).forEach { type ->
+
+                FilterChip(
+                    selected = mealType == type,
+                    onClick = {
+                        mealType = type
+                    },
+                    label = {
+                        Text(type)
+                    }
+                )
+
+            }
+
+        }
         Text(
             text = "Quantity: ${quantity.toInt()} g"
         )
@@ -111,7 +144,8 @@ fun FoodDetailsScreen(navController: NavHostController,
 
                     viewModel.saveMeal(
                         food = it,
-                        quantity = quantity.toInt()
+                        quantity = quantity.toInt(),
+                        mealType = mealType
                     )
 
                     navController.popBackStack()

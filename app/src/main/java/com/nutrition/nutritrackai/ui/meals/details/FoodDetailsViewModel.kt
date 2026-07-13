@@ -16,7 +16,8 @@ class FoodDetailsViewModel @Inject constructor(
 
     fun saveMeal(
         food: Food,
-        quantity: Int
+        quantity: Int,
+        mealType: String
     ) {
 
         viewModelScope.launch {
@@ -39,7 +40,7 @@ class FoodDetailsViewModel @Inject constructor(
 
                     quantity = quantity,
 
-                    mealType = "Breakfast",
+                    mealType = mealType,
 
                     timestamp = System.currentTimeMillis()
 
