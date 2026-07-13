@@ -30,7 +30,8 @@ espresso = "3.7.0"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
 serialization = "1.7.3"
-
+firebaseGoogleServices = "4.4.3"
+firebaseAppDistribution = "5.1.1"
 [libraries]
 
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -100,3 +101,5 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+google-services = { id = "com.google.gms.google-services", version.ref = "firebaseGoogleServices" }
+firebase-app-distribution = { id = "com.google.firebase.appdistribution", version.ref = "firebaseAppDistribution" }
