@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nutrition.nutritrackai.data.local.entity.MealEntity
 import com.nutrition.nutritrackai.domain.model.Food
-import com.nutrition.nutritrackai.domain.repository.MealRepository
+import com.nutrition.nutritrackai.data.remote.repository.MealRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,13 +30,13 @@ class FoodDetailsViewModel @Inject constructor(
 
                     imageUrl = food.imageUrl,
 
-                    calories = food.calories,
+                    calories = food.calories * quantity / 100,
 
-                    protein = food.protein,
+                    protein = food.protein * quantity / 100,
 
-                    carbs = food.carbs,
+                    carbs = food.carbs * quantity / 100,
 
-                    fat = food.fat,
+                    fat = food.fat * quantity / 100,
 
                     quantity = quantity,
 

@@ -4,6 +4,7 @@ package com.nutrition.nutritrackai.di
 import android.content.Context
 import androidx.room.Room
 import com.nutrition.nutritrackai.data.local.dao.MealDao
+import com.nutrition.nutritrackai.data.local.dao.WaterDao
 import com.nutrition.nutritrackai.data.local.database.NutriDatabase
 import dagger.Module
 import dagger.Provides
@@ -26,7 +27,8 @@ object DatabaseModule {
             context,
             NutriDatabase::class.java,
             "nutri_database"
-        ).build()
+        ) .fallbackToDestructiveMigration()
+            .build()
 
     }
 
@@ -39,5 +41,16 @@ object DatabaseModule {
         return database.mealDao()
 
     }
+
+    @Provides
+    @Singleton
+    fun provideWaterDao(
+        database: NutriDatabase
+    ): WaterDao {
+
+        return database.waterDao()
+
+    }
+
 
 }

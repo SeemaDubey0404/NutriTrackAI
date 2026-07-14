@@ -1,6 +1,7 @@
 package com.nutrition.nutritrackai.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -16,8 +17,18 @@ interface MealDao {
     )
 
     @Query(
-        "SELECT * FROM meals ORDER BY timestamp DESC"
+        """
+    SELECT * FROM meals
+    WHERE timestamp >= :startOfDay
+    ORDER BY timestamp DESC
+    """
     )
-    fun getMeals(): Flow<List<MealEntity>>
+    fun getMeals(
+        startOfDay: Long
+    ): Flow<List<MealEntity>>
 
+    @Delete
+    suspend fun deleteMeal(
+        meal: MealEntity
+    )
 }

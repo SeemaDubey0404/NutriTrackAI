@@ -1,6 +1,5 @@
 package com.nutrition.nutritrackai.data.remote.repository
 
-
 import com.nutrition.nutritrackai.data.remote.api.FoodApi
 import com.nutrition.nutritrackai.data.remote.dto.FoodDto
 import com.nutrition.nutritrackai.domain.model.Food

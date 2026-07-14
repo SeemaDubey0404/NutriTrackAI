@@ -1,9 +1,8 @@
-package com.nutrition.nutritrackai.domain.repository
+package com.nutrition.nutritrackai.data.remote.repository
 
-
+import com.nutrition.nutritrackai.core.util.startOfToday
 import com.nutrition.nutritrackai.data.local.dao.MealDao
 import com.nutrition.nutritrackai.data.local.entity.MealEntity
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MealRepository @Inject constructor(
@@ -18,9 +17,15 @@ class MealRepository @Inject constructor(
 
     }
 
-    fun getMeals(): Flow<List<MealEntity>> {
+    fun getMeals() =
+        mealDao.getMeals(
+            startOfToday()
+        )
+    suspend fun deleteMeal(
+        meal: MealEntity
+    ) {
 
-        return mealDao.getMeals()
+        mealDao.deleteMeal(meal)
 
     }
 

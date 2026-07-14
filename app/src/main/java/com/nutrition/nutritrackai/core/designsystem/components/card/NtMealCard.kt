@@ -2,6 +2,7 @@ package com.nutrition.nutritrackai.core.designsystem.components.card
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Icon
 
 @Composable
 fun NtMealCard(
@@ -26,7 +29,8 @@ fun NtMealCard(
     foods: String,
     calories: Int,
     icon: ImageVector,
-    completed: Boolean
+    completed: Boolean,
+    onDelete: () -> Unit
 ) {
 
     Card(
@@ -89,6 +93,27 @@ fun NtMealCard(
                 )
 
             }
+            Icon(
+
+                imageVector = Icons.Default.Delete,
+
+                contentDescription = "Delete",
+
+                tint = Color.Gray,
+
+                modifier = Modifier
+                    .size(28.dp)
+                    .clickable {
+
+                        onDelete()
+
+                    }
+
+            )
+
+            Spacer(
+                modifier = Modifier.width(16.dp)
+            )
 
             if (completed) {
 
@@ -99,6 +124,7 @@ fun NtMealCard(
                 )
 
             }
+
 
         }
 
