@@ -45,7 +45,7 @@ fun NtMetricCard(
 
     val animatedProgress = remember { Animatable(0f) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(progress) {
         animatedProgress.animateTo(
             progress,
             tween(

@@ -29,6 +29,9 @@ import com.nutrition.nutritrackai.core.designsystem.components.NtSectionHeader
 import com.nutrition.nutritrackai.core.designsystem.components.card.NtCoachCard
 import com.nutrition.nutritrackai.core.designsystem.components.card.NtHeroCard
 import com.nutrition.nutritrackai.core.designsystem.components.card.NtMealCard
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
@@ -46,7 +49,9 @@ fun HomeScreen(
     val water by viewModel
         .water
         .collectAsStateWithLifecycle()
-
+    val waterGoal by viewModel
+        .waterGoal
+        .collectAsStateWithLifecycle()
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier.fillMaxSize(),
@@ -59,12 +64,17 @@ fun HomeScreen(
             Column {
 
                 Text(
-                    text = "Good Morning 👋",
+                    text = getGreeting(),
                     style = MaterialTheme.typography.headlineMedium
                 )
 
                 Text(
-                    text = "13 July 2026",
+                    text = SimpleDateFormat(
+                        "dd MMMM yyyy",
+                        Locale.getDefault()
+                    ).format(
+                        Date()
+                    ),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Gray
                 )
@@ -84,7 +94,9 @@ fun HomeScreen(
                 title = "Calories",
                 value = nutrition.calories.toString(),
                 unit = "kcal",
-                progress = .66f,
+                progress = (
+                        nutrition.calories / 2200f
+                        ).coerceIn(0f, 1f),
                 icon = Icons.Default.LocalFireDepartment,
                 color = Color(0xFFFF7A00)
             )
@@ -99,8 +111,9 @@ fun HomeScreen(
                     water / 1000f
                 ),
                 unit = "L",
-                progress = (water / 3000f)
-                    .coerceIn(0f, 1f),
+                progress = (
+                        water / (waterGoal * 1000)
+                        ).coerceIn(0f, 1f),
                 icon = Icons.Default.WaterDrop,
                 color = Color(0xFF2196F3)
             )
@@ -112,7 +125,9 @@ fun HomeScreen(
                 title = "Protein",
                 value = nutrition.protein.toString(),
                 unit = "g",
-                progress = .68f,
+                progress = (
+                        nutrition.protein / 120f
+                        ).coerceIn(0f, 1f),
                 icon = Icons.Default.FitnessCenter,
                 color = Color(0xFF7C4DFF)
             )
@@ -125,7 +140,9 @@ fun HomeScreen(
                 title = "Carbs",
                 value = nutrition.carbs.toString(),
                 unit = "g",
-                progress = .72f,
+                progress = (
+                        nutrition.carbs / 250f
+                        ).coerceIn(0f, 1f),
                 icon = Icons.Default.Grass,
                 color = Color(0xFF2ECC71)
             )
@@ -133,7 +150,7 @@ fun HomeScreen(
         }
         item(span = { GridItemSpan(2) }) {
             NtCoachCard(
-                message = "Great job! Keep tracking your meals."
+                message = viewModel.getCoachMessage()
             )
         }
 
@@ -186,6 +203,23 @@ fun HomeScreen(
             }
 
         }
+
+    }
+
+}
+fun getGreeting(): String {
+
+    val hour = java.util.Calendar
+        .getInstance()
+        .get(java.util.Calendar.HOUR_OF_DAY)
+
+    return when {
+
+        hour < 12 -> "Good Morning 👋"
+
+        hour < 17 -> "Good Afternoon ☀️"
+
+        else -> "Good Evening 🌙"
 
     }
 

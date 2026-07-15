@@ -10,6 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
@@ -35,13 +39,21 @@ fun WaterScreen(
 ) {
 
     val water by viewModel.water.collectAsStateWithLifecycle()
-
-    val progress = (water / 3000f)
+    val waterGoal by viewModel
+        .waterGoal
+        .collectAsStateWithLifecycle()
+    val progress = (water / (waterGoal * 1000))
         .coerceIn(0f, 1f)
+    val history by viewModel
+        .waterHistory
+        .collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(
+                rememberScrollState()
+            )
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp)
@@ -68,8 +80,9 @@ fun WaterScreen(
             ) {
 
                 Text(
-                    text = "%.1f / 3.0 L".format(
-                        water / 1000f
+                    text = "%.1f / %.1f L".format(
+                        water / 1000f,
+                        waterGoal
                     ),
                     style = MaterialTheme.typography.headlineSmall
                 )
@@ -100,7 +113,82 @@ fun WaterScreen(
                 style = MaterialTheme.typography.titleMedium
 
             )
+            Text(
+                text = "Daily Goal",
+                style = MaterialTheme.typography.titleMedium
+            )
 
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+
+                GoalButton(
+                    text = "2 L",
+                    onClick = {
+                        viewModel.setWaterGoal(2f)
+                    }
+                )
+
+                GoalButton(
+                    text = "2.5 L",
+                    onClick = {
+                        viewModel.setWaterGoal(2.5f)
+                    }
+                )
+
+                GoalButton(
+                    text = "3 L",
+                    onClick = {
+                        viewModel.setWaterGoal(3f)
+                    }
+                )
+
+                GoalButton(
+                    text = "4 L",
+                    onClick = {
+                        viewModel.setWaterGoal(4f)
+                    }
+                )
+            }
+            Text(
+                text = "Today's History",
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            history.forEach { item ->
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                ) {
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+
+                        Text(
+                            text = "💧 ${item.amount} ml"
+                        )
+
+                        Text(
+                            text = java.text.SimpleDateFormat(
+                                "hh:mm a",
+                                java.util.Locale.getDefault()
+                            ).format(
+                                java.util.Date(item.timestamp)
+                            )
+                        )
+
+                    }
+
+                }
+
+            }
             Row(
 
                 modifier = Modifier.fillMaxWidth(),
@@ -172,4 +260,15 @@ fun WaterButton(
 
     }
 
+}
+@Composable
+fun GoalButton(
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick
+    ) {
+        Text(text)
+    }
 }
