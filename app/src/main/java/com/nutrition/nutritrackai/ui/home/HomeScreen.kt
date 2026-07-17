@@ -82,7 +82,8 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 NtHeroCard(
-                    score = 85
+                    score = viewModel.getHealthScore(),
+                    message = viewModel.getHealthMessage()
                 )
 
             }

@@ -28,5 +28,5 @@ class MealRepository @Inject constructor(
         mealDao.deleteMeal(meal)
 
     }
-
+    fun getAllMeals() = mealDao.getAllMeals()
 }

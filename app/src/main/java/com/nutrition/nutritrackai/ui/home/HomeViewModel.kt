@@ -186,5 +186,64 @@ class HomeViewModel @Inject constructor(
         }
 
     }
+    fun getHealthScore(): Int {
 
+        val calorieScore =
+            (nutritionSummary.value.calories / 2200f)
+                .coerceIn(0f, 1f)
+
+        val waterScore =
+            (water.value / (waterGoal.value * 1000))
+                .coerceIn(0f, 1f)
+
+        val proteinScore =
+            (nutritionSummary.value.protein / 120f)
+                .coerceIn(0f, 1f)
+
+        val carbScore =
+            (nutritionSummary.value.carbs / 250f)
+                .coerceIn(0f, 1f)
+
+        val totalScore = (
+                calorieScore * 30 +
+                        waterScore * 30 +
+                        proteinScore * 20 +
+                        carbScore * 20
+                )
+
+        return totalScore.toInt()
+    }
+    fun getHealthMessage(): String {
+
+        val score = getHealthScore()
+
+        return when {
+
+            score < 30 -> {
+
+                "Needs improvement 😴"
+
+            }
+
+            score < 60 -> {
+
+                "Keep going 👍"
+
+            }
+
+            score < 80 -> {
+
+                "Great 💪"
+
+            }
+
+            else -> {
+
+                "Excellent 🔥"
+
+            }
+
+        }
+
+    }
 }

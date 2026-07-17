@@ -34,5 +34,6 @@ class WaterRepository @Inject constructor(
         waterDao.getWater(
             startOfToday()
         )
+    fun getAllWater() = waterDao.getAllWater()
 
 }

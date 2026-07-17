@@ -31,4 +31,6 @@ interface MealDao {
     suspend fun deleteMeal(
         meal: MealEntity
     )
+    @Query("SELECT * FROM meals ORDER BY timestamp DESC")
+    fun getAllMeals(): Flow<List<MealEntity>>
 }

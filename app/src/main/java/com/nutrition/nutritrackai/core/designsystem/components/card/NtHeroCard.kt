@@ -27,12 +27,13 @@ import com.nutrition.nutritrackai.core.components.progress.NtCircularScore
 @Composable
 fun NtHeroCard(
     score: Int,
+    message: String,
     modifier: Modifier = Modifier
 ) {
 
     val progress = remember { Animatable(0f) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(score) {
         progress.animateTo(
             score / 100f,
             animationSpec = tween(
@@ -71,7 +72,7 @@ fun NtHeroCard(
             )
 
             Text(
-                text = "+8 compared to yesterday",
+                text = message,
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.White.copy(alpha = .85f)
             )
